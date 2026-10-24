@@ -1,0 +1,30 @@
+# Build output
+/target
+
+# Vault data — never commit a vault, real or test
+*.vault
+vault.toml
+manifest.bin
+manifest.bak
+objects/
+/test-vaults/
+
+# Keys, certs, secrets
+*.key
+*.pem
+*.p12
+*.pfx
+*.asc
+*.gpg
+.env
+.env.*
+
+# Patch / editor / OS junk
+*.part
+*.orig
+*.rej
+*.swp
+*~
+.vscode/
+.idea/
+.DS_Store
