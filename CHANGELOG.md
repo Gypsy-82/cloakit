@@ -3,7 +3,7 @@
 All notable changes to this project are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/).
 
-## [0.1.0] — unreleased
+## [0.1.0] — 2026-10-24
 
 Initial working implementation.
 
@@ -27,3 +27,5 @@ Initial working implementation.
 - Whole-file in-memory encryption (RAM scales with item size).
 - No `mlock()`; see `SECURITY.md` for the swap caveat.
 - Licensed under `MIT OR Apache-2.0`.
+
+[0.1.0]: https://github.com/Gypsy-82/cloakit/releases/tag/v0.1.0

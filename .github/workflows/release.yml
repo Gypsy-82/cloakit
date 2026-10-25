@@ -1,0 +1,68 @@
+name: release
+
+# Builds a fully static (musl) Linux binary and attaches it to a GitHub
+# Release whenever a version tag like v0.1.0 is pushed. The published binary
+# needs no Rust, no cargo, and no particular glibc — just a Linux kernel.
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write # required to create the release and upload assets
+
+env:
+  CARGO_TERM_COLOR: always
+  TARGET: x86_64-unknown-linux-musl
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Verify tag matches Cargo.toml version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          crate="$(cargo metadata --no-deps --format-version 1 \
+            | grep -o '"version":"[^"]*"' | head -n1 | cut -d'"' -f4)"
+          echo "tag=$tag crate=$crate"
+          if [ "$tag" != "$crate" ]; then
+            echo "::error::tag v$tag does not match Cargo.toml version $crate"
+            exit 1
+          fi
+
+      - name: Install musl target
+        run: rustup target add "$TARGET"
+
+      - name: Build static release binary
+        run: cargo build --release --locked --target "$TARGET"
+
+      - name: Confirm the binary is static
+        run: |
+          bin="target/$TARGET/release/cloakit"
+          file "$bin"
+          ldd "$bin" 2>&1 | grep -q "not a dynamic executable\|statically linked" \
+            || { echo "::error::binary is not statically linked"; exit 1; }
+
+      - name: Package tarball + checksum
+        run: |
+          name="cloakit-${GITHUB_REF_NAME}-x86_64-linux-musl"
+          mkdir -p "dist/$name"
+          cp "target/$TARGET/release/cloakit" "dist/$name/"
+          cp README.md CHANGELOG.md LICENSE-MIT LICENSE-APACHE "dist/$name/"
+          tar -C dist -czf "dist/$name.tar.gz" "$name"
+          ( cd dist && sha256sum "$name.tar.gz" > "$name.tar.gz.sha256" )
+          ls -lh dist
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          name="cloakit-${GITHUB_REF_NAME}-x86_64-linux-musl"
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --notes "Static x86_64 Linux binary (musl). No Rust required — download, verify the checksum, extract, and run. See CHANGELOG.md for what changed." \
+            "dist/$name.tar.gz" \
+            "dist/$name.tar.gz.sha256"

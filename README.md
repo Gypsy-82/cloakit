@@ -65,6 +65,11 @@ cargo clippy --all-targets -- -D warnings
 Requires Rust 1.97+ (edition 2024). The crate forbids `unsafe` code
 (`unsafe_code = "forbid"`).
 
+Released binaries are built as a **fully static musl executable** so they run on
+any Linux kernel with no Rust and no particular glibc version — see
+[`docs/RELEASING.md`](docs/RELEASING.md) for why that matters and how a release
+is cut.
+
 ## Honest limits
 
 cloakit protects data **at rest, while cloaked**. It does **not** protect a
