@@ -3,6 +3,11 @@
 All notable changes to this project are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Changed
+- License is now MIT only (was `MIT OR Apache-2.0`).
+
 ## [0.1.0] — 2026-10-24
 
 Initial working implementation.

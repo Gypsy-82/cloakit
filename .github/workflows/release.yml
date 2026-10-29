@@ -51,7 +51,7 @@ jobs:
           name="cloakit-${GITHUB_REF_NAME}-x86_64-linux-musl"
           mkdir -p "dist/$name"
           cp "target/$TARGET/release/cloakit" "dist/$name/"
-          cp README.md CHANGELOG.md LICENSE-MIT LICENSE-APACHE "dist/$name/"
+          cp README.md CHANGELOG.md LICENSE "dist/$name/"
           tar -C dist -czf "dist/$name.tar.gz" "$name"
           ( cd dist && sha256sum "$name.tar.gz" > "$name.tar.gz.sha256" )
           ls -lh dist

@@ -5,7 +5,7 @@ edition = "2024"
 rust-version = "1.97"
 description = "Terminal file/folder cloaking for Linux — encrypts contents, filenames, and the inventory itself."
 authors = ["Gypsy-82 <262953538+Gypsy-82@users.noreply.github.com>"]
-license = "MIT OR Apache-2.0"
+license = "MIT"
 repository = "https://github.com/Gypsy-82/cloakit"
 publish = false
 

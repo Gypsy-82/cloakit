@@ -84,5 +84,4 @@ v0.1.0 — early release, not independently audited.
 
 ## License
 
-Licensed under either of [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE),
-at your option.
+MIT. See [LICENSE](LICENSE).
